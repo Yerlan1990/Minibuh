@@ -29,6 +29,24 @@ app.include_router(invoices_router)
 app.include_router(acts_router)
 app.include_router(tax_invoices_router)
 app.include_router(documents_router)
+import os
+from fastapi import FastAPI
+
+app = FastAPI(title="Minibuh API")
+
+# Подключаем Telegram только если есть токен
+if os.getenv("BOT_TOKEN"):
+    from .bot.telegram_webhook import router as tg_router
+    app.include_router(tg_router, prefix="/telegram")
+else:
+    print("BOT_TOKEN is not set – Telegram router disabled", flush=True)
+
+@app.get("/")
+def health():
+    return {"ok": True, "service": "minibuh"}
+
+
+
 app.include_router(analytics_router)
 app.include_router(settings_router)
 app.include_router(ocr_router)
