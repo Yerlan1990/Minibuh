@@ -135,3 +135,15 @@ session = AiohttpSession()
 bot = Bot(token=BOT_TOKEN, session=session)
 dp = Dispatcher()
 dp.include_router(router)
+
+import os
+from aiogram import Bot
+from aiohttp import ClientSession
+
+BOT_TOKEN = (os.getenv("BOT_TOKEN") or "").strip()
+if not BOT_TOKEN or ":" not in BOT_TOKEN:
+    raise RuntimeError("BOT_TOKEN is missing or invalid. Set it in Railway → Variables.")
+
+session = ClientSession()
+bot = Bot(token=BOT_TOKEN, session=session)
+
